@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prateek eMitra Shop</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Yatra+One&display=swap');
+
+        body {
+            font-family: 'Noto Sans Devanagari', sans-serif;
+            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)),
+                        url('https://images.unsplash.com/photo-1544829099-b9a0c07fad1a?q=80&w=2487&auto=format&fit=crop') center/cover fixed;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .glass {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        }
+
+        .logo-text {
+            font-family: 'Yatra One', cursive;
+            background: linear-gradient(45deg, #FFD700, #FFA500, #FFD700);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { filter: brightness(100%) blur(0px); }
+            50% { filter: brightness(150%) blur(1px); }
+            100% { filter: brightness(100%) blur(0px); }
+        }
+
+        .status-badge {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .durga-text {
+            background: linear-gradient(90deg, #ff9966, #ff5e62, #ff9966);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: colorChange 5s infinite;
+        }
+
+        @keyframes colorChange {
+            0% { filter: hue-rotate(0deg); }
+            100% { filter: hue-rotate(360deg); }
+        }
+
+        .toggle-btn {
+            transition: all 0.3s ease;
+        }
+
+        .toggle-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+        }
+
+        .shop-open {
+            animation: openAnimation 0.5s ease-out;
+        }
+
+        .shop-closed {
+            animation: closeAnimation 0.5s ease-out;
+        }
+
+        @keyframes openAnimation {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        @keyframes closeAnimation {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center p-4">
+    <div class="glass rounded-2xl p-8 max-w-md w-full text-center transform hover:scale-105 transition-transform duration-300">
+        <h1 class="text-4xl md:text-6xl mb-12 logo-text font-bold tracking-wider">
+            प्रतीक eMitra
+        </h1>
+
+        <div id="shopStatus" class="mb-12">
+            <!-- Shop status will be updated here -->
+        </div>
+
+        <div class="text-3xl durga-text mb-8 font-bold tracking-wider">
+            जय माँ दुर्गा
+        </div>
+
+        <div class="mt-8">
+            <button onclick="toggleShopStatus()" class="toggle-btn glass px-8 py-4 rounded-full text-white text-lg hover:bg-white/20 transition-all">
+                दुकान की स्थिति बदलें
+                <i class="bi bi-arrow-repeat ml-2"></i>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        let isShopOpen = false;
+
+        function updateShopStatus() {
+            const statusDiv = document.getElementById('shopStatus');
+            if (isShopOpen) {
+                statusDiv.innerHTML = `
+                    <div class="status-badge shop-open bg-green-500/20 text-green-300 p-6 rounded-2xl glass">
+                        <i class="bi bi-shop text-6xl mb-4"></i>
+                        <div class="text-3xl font-bold" style="letter-spacing: 2px;">दुकान खुली है</div>
+                        <div class="text-sm mt-2 text-green-200">आपका स्वागत है</div>
+                    </div>
+                `;
+            } else {
+                statusDiv.innerHTML = `
+                    <div class="status-badge shop-closed bg-red-500/20 text-red-300 p-6 rounded-2xl glass">
+                        <i class="bi bi-shop text-6xl mb-4"></i>
+                        <div class="text-3xl font-bold" style="letter-spacing: 2px;">दुकान बंद है</div>
+                        <div class="text-sm mt-2 text-red-200">कृपया बाद में आएं</div>
+                    </div>
+                `;
+            }
+        }
+
+        function toggleShopStatus() {
+            isShopOpen = !isShopOpen;
+            updateShopStatus();
+            
+            // Save status to localStorage
+            localStorage.setItem('shopStatus', isShopOpen);
+        }
+
+        // Load initial status from localStorage
+        window.onload = function() {
+            const savedStatus = localStorage.getItem('shopStatus');
+            if (savedStatus !== null) {
+                isShopOpen = savedStatus === 'true';
+            }
+            updateShopStatus();
+        }
+    </script>
+<script>document.body.addEventListener('wheel', e => { if (!e.ctrlKey) return; e.preventDefault(); return }, { passive: false })</script>
+	</body>
+</html>
